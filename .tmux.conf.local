@@ -431,36 +431,6 @@ tmux_conf_uninstall_plugins_on_reload=true
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
 
-set -g history-limit 10000
-
-#用-|切分panel, 直观
-unbind '"'
-bind - splitw -v
-unbind %
-bind '\' splitw -h
-
-#使用组合键直接选择panel'
-bind -n C-i select-pane -U
-bind -n C-k select-pane -D
-bind -n C-j select-pane -L
-bind -n C-l select-pane -R
-
-bind -n M-i select-pane -U
-bind -n M-k select-pane -D
-bind -n M-j select-pane -L
-bind -n M-l select-pane -R
-
-#改变panel 大小
-bind -r C-I resize-pane -U 2
-bind -r C-K resize-pane -D 2
-bind -r C-J resize-pane -L 2
-bind -r C-L resize-pane -R 2
-
-# 滚轮滚屏
-bind -T root WheelDownPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
-bind -T root WheelUpPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
-
-
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
@@ -514,3 +484,57 @@ bind -T root WheelUpPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy
 # "$@"
 # # /!\ do not remove the previous line
 # #     do not write below this line
+
+set -g history-limit 10000
+
+#用-|切分panel, 直观
+unbind '"'
+bind - splitw -v
+unbind %
+bind '\' splitw -h
+
+#使用组合键直接选择panel'
+bind -n C-i select-pane -U
+bind -n C-k select-pane -D
+bind -n C-j select-pane -L
+bind -n C-l select-pane -R
+
+bind -n M-i select-pane -U
+bind -n M-k select-pane -D
+bind -n M-j select-pane -L
+bind -n M-l select-pane -R
+
+#改变panel 大小
+bind -r C-I resize-pane -U 2
+bind -r C-K resize-pane -D 2
+bind -r C-J resize-pane -L 2
+bind -r C-L resize-pane -R 2
+
+# 滚轮滚屏
+bind -T root WheelDownPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
+bind -T root WheelUpPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
+
+set-window-option -g mode-keys vi
+
+#取消tab建切换panel, 恢复默认效果
+unbind -n tab
+
+# 提示信息显示时长  10*1000 ms
+set -g display-time 10000
+
+# 设定前缀为alt+b
+set -g prefix2 M-b
+bind M-b send-prefix -2
+
+# cygwin ctrl-v
+if-shell 'uname | grep -qi Cygwin' 'bind -T root C-v run "cat /dev/clipboard | tmux load-buffer - ; tmux paste-buffer"'
+
+set -g mouse on
+
+set-option -g default-shell /usr/bin/fish
+
+# bind -n C-p display-popup -E "/usr/local/bin/tmux new-session -A -s popup"
+
+# set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+# run '~/.tmux/plugins/tpm/tpm'
